@@ -66,10 +66,10 @@ class MyComponent extends HTMLElement {
             <style>
             @import url('./styles.css')
             </style>
-            <h1 ${attr.quote}>Author</h1>
+            <h1 ${attr.quote}>Quote</h1>
             <div class="loader-container"><div class="loader"></div></div>
-            <span ${attr.category}>Quote</span>
-            <p ${attr.author}>Quote</p>
+            <span ${attr.category}>Category</span>
+            <p ${attr.author}>Author</p>
         `
     }
 
