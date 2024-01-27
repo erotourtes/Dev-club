@@ -1,7 +1,7 @@
 // TODO: hide the key
 const API_KEY = "AAjRzUJ11rEKA/RVqt0gaQ==ItIzRjjzR3RPGWfU"
 
-export class QuoteApi {
+export class QuoteApi extends EventTarget {
     #url = "https://api.api-ninjas.com/v1/quotes"
     #isFetching = false
 
@@ -16,7 +16,7 @@ export class QuoteApi {
         if (this.#isFetching) {
             return void console.log("Already fetching")
         }
-        this.#isFetching = true
+        this.#indicateStart()
         return fetch(url, {
             headers: {
                 "X-Api-Key": API_KEY
@@ -25,7 +25,17 @@ export class QuoteApi {
             .then(response => response.json())
             .then(data => data[0])
             .catch(error => console.error(error))
-            .finally(() => this.#isFetching = false)
+            .finally(() => this.#indicateEnd())
+    }
+
+    #indicateStart() {
+        this.#isFetching = true
+        this.dispatchEvent(new Event('start'))
+    }
+
+    #indicateEnd() {
+        this.#isFetching = false
+        this.dispatchEvent(new Event('end'))
     }
 
     #getUrl(category) {

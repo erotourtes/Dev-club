@@ -13,17 +13,28 @@ class MyComponent extends HTMLElement {
 
     connectedCallback() {
         this.#refresh()
-
-        document.addEventListener('click', (event) => {
-
-            if (this.api.isFetching) return void console.log("Already fetching")
-
-            this.#refresh()
-        })
+        this.#listen()
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         this.#update(name, newValue)
+    }
+
+    #listen() {
+        const loadContainer = this.shadowRoot.querySelector('.loader-container')
+        const loader = loadContainer.children[0]
+        this.api.addEventListener('start', () => {
+            loader.classList.add('loader')
+        })
+
+        this.api.addEventListener('end', () => {
+            loader.classList.remove('loader')
+        })
+
+        document.addEventListener('click', (event) => {
+            if (this.api.isFetching) return void console.log("Already fetching")
+            this.#refresh()
+        })
     }
 
     #refresh() {
@@ -56,6 +67,7 @@ class MyComponent extends HTMLElement {
             @import url('./styles.css')
             </style>
             <h1 ${attr.quote}>Author</h1>
+            <div class="loader-container"><div class="loader"></div></div>
             <span ${attr.category}>Quote</span>
             <p ${attr.author}>Quote</p>
         `
