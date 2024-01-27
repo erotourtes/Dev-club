@@ -1,7 +1,10 @@
+import { QuoteApi } from './api.js'
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements
 
 class MyComponent extends HTMLElement {
+    api = new QuoteApi()
+
     constructor() {
         super()
         this.attachShadow({ mode: 'open' })
@@ -12,6 +15,9 @@ class MyComponent extends HTMLElement {
         this.#refresh()
 
         document.addEventListener('click', (event) => {
+
+            if (this.api.isFetching) return void console.log("Already fetching")
+
             this.#refresh()
         })
     }
@@ -21,19 +27,25 @@ class MyComponent extends HTMLElement {
     }
 
     #refresh() {
-        const attr = this.attrWithoutPrefix
-
-        this.#todoItem.then((data) => {
-            this.dataset[attr.todo] = data.title
-            this.dataset[attr.isDone] = data.completed
+        this.api.getQuote().then((data) => {
+            this.#checkConsistency(data)
+            Object.assign(this.dataset, data)
         });
     }
 
     #update(attribute, value) {
-        console.log(attribute, value)
         const element = this.shadowRoot.querySelector(`[${attribute}]`)
         if (!element) return void console.log("Element not found")
         element.innerHTML = value
+    }
+
+    #checkConsistency(data) {
+        const attr = this.attrWithoutPrefix
+        const keys = Object.keys(data)
+        const missing = Object.values(attr).filter((key) => !keys.includes(key))
+        if (missing.length) {
+            throw new Error(`Missing data: ${missing.join(', ')}`)
+        }
     }
 
     // it is violates the HTML [spec](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-element-conformance)
@@ -43,8 +55,9 @@ class MyComponent extends HTMLElement {
             <style>
             @import url('./styles.css')
             </style>
-            <h1 ${attr.todo}>Author</h1>
-            <p ${attr.isDone}>Quote</p>
+            <h1 ${attr.quote}>Author</h1>
+            <p ${attr.category}>Quote</p>
+            <p ${attr.author}>Quote</p>
         `
     }
 
@@ -62,21 +75,12 @@ class MyComponent extends HTMLElement {
     }
 
     /**
-     * @returns {Promise<TodoItem>} 
-     */
-    get #todoItem() {
-        const id = Math.floor(Math.random() * 100) + 1
-        return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
-            .then(response => response.json())
-            .catch(error => console.error(error))
-    }
-
-    /**
      * @type {attributes}
      */
     static attributes = {
-        todo: 'data-todo',
-        isDone: 'data-isdone'
+        quote: 'data-quote',
+        author: 'data-author',
+        category: 'data-category',
     }
 
     static observedAttributes = Object.values(MyComponent.attributes)
@@ -87,14 +91,7 @@ customElements.define('my-component', MyComponent)
 
 /**
  * @typedef {Object} attributes
- * @property {string} todo 
- * @property {string} isDone
- */
-
-/**
- * @typedef {Object} TodoItem
- * @property {number} userId - The ID of the user.
- * @property {number} id - The ID of the todo item.
- * @property {string} title - The title of the todo item.
- * @property {boolean} completed - Indicates whether the todo item is completed or not.
+ * @property {string} quote 
+ * @property {string} author
+ * @property {string} category
  */
