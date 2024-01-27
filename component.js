@@ -56,7 +56,7 @@ class MyComponent extends HTMLElement {
             @import url('./styles.css')
             </style>
             <h1 ${attr.quote}>Author</h1>
-            <p ${attr.category}>Quote</p>
+            <span ${attr.category}>Quote</span>
             <p ${attr.author}>Quote</p>
         `
     }

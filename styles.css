@@ -1,13 +1,25 @@
 my-component {
-    color: #4ce5e5;
+    --primary: #6564DB;
+    --surface: #FFB400;
+    --secondary: #89D2DC;
 }
 
 h1 {
-    border-bottom: 2px solid #ccc;
+    color: var(--primary);
+    margin-bottom: 0;
+}
+
+span {
+    color: var(--primary);
+    border-radius: 3rem;
+    background-color: var(--surface);
+    padding: 3px 5px 3px 5px;
+    margin: 0;
 }
 
 p {
-    color: rgb(24, 152, 152)
+    color: var(--secondary);
+    font-size: 1.5rem;
 }
 
 p::before {
