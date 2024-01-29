@@ -1,13 +1,12 @@
 import { HOST } from "../../main"
 import { Req, Res } from "./handlerDec"
 
-const wrapped = (handler: any) => (req: Req, res: Res) => {
+const wrapped = (handler: any) => (req: Req, res: Res, ...args: any) => {
     console.log('from parse args', req.url)
     const url = new URL(req.url!, HOST)
-    const params = url.searchParams
-    const args = Object.fromEntries(params.entries())
+    const params = Object.fromEntries(url.searchParams.entries())
 
-    handler(req, res, args)
+    handler(req, res, params, ...args)
 }
 
 export function ParseArgs() {
