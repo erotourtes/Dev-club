@@ -8,13 +8,13 @@ const contentTypes = {
     xml: 'application/xml',
 }
 
-const wrapped = (handler: any, contentType: string) => async function (req: Req, res: Res) {
+const wrapped = (handler: any, contentType: string) => async function (req: Req, res: Res, ...args: any) {
     const isAsync = handler.constructor.name === 'AsyncFunction'
     let result;
     if (isAsync) {
-        result = await handler(req, res)
+        result = await handler(req, res, ...args)
     } else {
-        result = handler(req, res)
+        result = handler(req, res, ...args)
     }
 
     console.log(result)

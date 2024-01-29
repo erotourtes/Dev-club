@@ -4,8 +4,8 @@ import { Greeting } from "@/route";
 
 const modules = [Greeting];
 
-const PORT = 8000;
-const HOST = "http://localhost";
+export const PORT = 8000;
+export const HOST = "http://localhost";
 
 http
     .createServer((req, res) => {
