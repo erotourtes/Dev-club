@@ -1,0 +1,10 @@
+GET http://localhost:8000/greeting/pluto?name=John
+Content-Type: application/json
+
+{
+    "title": "Project 1",
+    "description": "Project 1 description"
+}
+
+###
+

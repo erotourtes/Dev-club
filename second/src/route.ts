@@ -1,5 +1,6 @@
 import { Get, Handler, Req, Res } from "./decorators/handlerDec";
 import { ParseArgs } from "./decorators/parseArgs";
+import { ParseBody } from "./decorators/parseBody";
 import { ReturnJson } from "./decorators/parserDec";
 
 @Handler('/greeting')
@@ -23,6 +24,17 @@ export class Greeting {
     @ReturnJson
     hello(req: Req, res: Res, args: any) {
         console.log(args)
+        return { greeting: "welcome " }
+    }
+
+
+
+    @Get("/pluto")
+    @ParseArgs()
+    @ParseBody()
+    @ReturnJson
+    pluto(req: Req, res: Res, body: any, args: any) {
+        console.log(args, body)
         return { greeting: "welcome " }
     }
 }
