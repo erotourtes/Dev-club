@@ -1,5 +1,5 @@
 import * as http from "http";
-import { Handler, routerMap } from "@/decorator";
+import { routerMap } from "@/decorators/handlerDec";
 import { Greeting } from "@/route";
 
 const modules = [Greeting];
@@ -18,7 +18,8 @@ http
                 handler(req, res);
             } catch (error) {
                 console.error(error);
-                res.statusCode = 500;
+                // @ts-ignore
+                res.statusCode = error.status || 500;
                 res.setHeader("Content-Type", "application/json");
                 res.end(JSON.stringify({ error: "Something wrong happend" }));
             }

@@ -49,3 +49,7 @@ function MethodFactory(method: string) {
 }
 
 export const Get = MethodFactory('GET')
+
+// TODO: args, wrapper to return
+// TO ask: you use all function async ; body stream is iterable
+// context object
