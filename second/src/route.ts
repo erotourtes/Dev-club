@@ -3,6 +3,7 @@ import { Get, Handler, Req, Res } from "./decorators/handler";
 import { ParseArgs } from "./decorators/parseArgs";
 import { ParseBody } from "./decorators/parseBody";
 import { ReturnJson } from "./decorators/parsers";
+import { ResolverBAC } from "./decorators/resolver";
 
 @Handler("/greeting")
 export class Greeting {
@@ -44,6 +45,14 @@ export class Greeting {
   @ReturnJson
   mars(req: Req, res: Res, body: any, args: any, context: any) {
     console.log(args, body, context);
+    return { greeting: "welcome " };
+  }
+
+  @Get("/jupiter")
+  @ReturnJson
+  @ResolverBAC()
+  jupiter(body: any, args: any, context: any) {
+    console.log(body, args, context);
     return { greeting: "welcome " };
   }
 }

@@ -3,12 +3,11 @@ import { Req, Res } from "./handler";
 
 const wrapped =
   (handler: any) =>
-  (req: Req, res: Res, ...args: any) => {
-    console.log("from parse args", req.url);
+  async (req: Req, res: Res, ...args: any) => {
     const url = new URL(req.url!, HOST);
     const params = Object.fromEntries(url.searchParams.entries());
 
-    handler(req, res, params, ...args);
+    return await handler(req, res, params, ...args);
   };
 
 export function ParseArgs() {

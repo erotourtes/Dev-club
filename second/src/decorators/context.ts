@@ -8,12 +8,12 @@ const parseLanguages = (req: Req) => {
 
 const wrapped =
   (handler: any) =>
-  (req: Req, res: Res, ...args: any) => {
+  async (req: Req, res: Res, ...args: any) => {
     const context = {
       languages: parseLanguages(req),
       userAgent: req.headers["user-agent"],
     };
-    handler(req, res, context, ...args);
+    return await handler(req, res, context, ...args);
   };
 
 export function Context() {

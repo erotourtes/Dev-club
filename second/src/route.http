@@ -1,4 +1,4 @@
-GET http://localhost:8000/greeting/mars?name=John
+GET http://localhost:8000/greeting/jupiter?name=John
 Content-Type: application/json
 
 {
