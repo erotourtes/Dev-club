@@ -1,8 +1,8 @@
-import { Context } from "./decorators/contextDec";
-import { Get, Handler, Req, Res } from "./decorators/handlerDec";
+import { Context } from "./decorators/context";
+import { Get, Handler, Req, Res } from "./decorators/handler";
 import { ParseArgs } from "./decorators/parseArgs";
 import { ParseBody } from "./decorators/parseBody";
-import { ReturnJson } from "./decorators/parserDec";
+import { ReturnJson } from "./decorators/parsers";
 
 @Handler("/greeting")
 export class Greeting {

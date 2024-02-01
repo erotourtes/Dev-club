@@ -1,10 +1,10 @@
-import { Req, Res } from "./handlerDec";
+import { Req, Res } from "./handler";
 
 const parseLanguages = (req: Req) => {
   const languages = req.headers["accept-language"];
   if (!languages) return [];
   return languages.split(",").map((l) => l.trim());
-}
+};
 
 const wrapped =
   (handler: any) =>
