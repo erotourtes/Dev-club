@@ -1,51 +1,30 @@
-import { Context } from "./decorators/context";
-import { Get, Handler, Req, Res } from "./decorators/handler";
-import { ParseArgs } from "./decorators/parseArgs";
-import { ParseBody } from "./decorators/parseBody";
+import { Get, Handler, Req, Res, routerMap } from "./decorators/handler";
 import { ReturnJson } from "./decorators/parsers";
-import { ResolverBAC } from "./decorators/resolver";
+import { ResolverBAC, ResolverAC } from "./decorators/resolver";
 
 @Handler("/greeting")
 export class Greeting {
   private greeting: string = "Hello World";
 
+  // @Get("/mars")
+  // @Context()
+  // @ParseArgs()
+  // @ParseBody()
+  // @ReturnJson
+  // mars(req: Req, res: Res, body: any, args: any, context: any) {
+  //   console.log(args, body, context);
+  //   return { greeting: "welcome " };
+  // }
+
   @Get()
-  base(req: Req, res: Res) {
-    res.end(this.greeting);
-  }
-
-  @Get("/world")
   @ReturnJson
-  world(req: Req, res: Res) {
-    console.log("from world");
-    return { greeting: "welcome " };
-  }
-
-  @Get("/hello")
-  @ParseArgs()
-  @ReturnJson
-  hello(req: Req, res: Res, args: any) {
-    console.log(args);
-    return { greeting: "welcome " };
-  }
-
-  @Get("/pluto")
-  @ParseArgs()
-  @ParseBody()
-  @ReturnJson
-  pluto(req: Req, res: Res, body: any, args: any) {
-    console.log(args, body);
-    return { greeting: "welcome " };
-  }
-
-  @Get("/mars")
-  @Context()
-  @ParseArgs()
-  @ParseBody()
-  @ReturnJson
-  mars(req: Req, res: Res, body: any, args: any, context: any) {
-    console.log(args, body, context);
-    return { greeting: "welcome " };
+  @ResolverBAC()
+  base(body: any, args: any, context: any) {
+    return {
+      body,
+      args,
+      context,
+    };
   }
 
   @Get("/jupiter")
@@ -54,5 +33,20 @@ export class Greeting {
   jupiter(body: any, args: any, context: any) {
     console.log(body, args, context);
     return { greeting: "welcome " };
+  }
+}
+
+@Handler("/")
+export class Base {
+  @Get()
+  @ReturnJson
+  @ResolverAC()
+  base(args: any, context: any) {
+    const routes = Array.from(routerMap.keys()).sort().join(", ");
+    return {
+      routes,
+      args,
+      context,
+    };
   }
 }

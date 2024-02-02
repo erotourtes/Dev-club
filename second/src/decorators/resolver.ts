@@ -12,3 +12,12 @@ export function ResolverBAC(hasTransport: boolean = false) {
     const handler = prototype[key].bind(prototype);
   };
 }
+
+export function ResolverAC(hasTransport: boolean = false) {
+  return function (prototype: any, key: string) {
+    ParseArgs(hasTransport)(prototype, key);
+    Context()(prototype, key);
+
+    const handler = prototype[key].bind(prototype);
+  };
+}
