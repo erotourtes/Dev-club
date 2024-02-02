@@ -11,7 +11,7 @@ const wrapped =
     else return await handler(params, ...args);
   };
 
-export function ParseArgs(hasTransport: boolean = false) {
+export function ParseArgs(hasTransport: boolean = true) {
   return function (prototype: any, key: string) {
     const handler = prototype[key].bind(prototype);
 
